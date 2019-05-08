@@ -1,0 +1,45 @@
+<!-- include jquery -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+<!-- create input -->
+<input id="query" type="text"/>
+<input id="submit" type="button" value="search..."/>
+
+<!-- create results element -->
+<div id="qmeta_search"></div>
+
+<script>
+
+// run get with options after submit
+$('#submit').on('click', function(){
+
+  // set your api-key
+  var key = 'YOUR API KEY';
+
+  // set your name
+  var name = 'YOUR NAME';
+
+  // get query from form input
+  var query = $('#query').val();
+
+  //build get url
+  var offset = 0;
+  var lang = 'en';
+  var format = 'json';
+
+  //set "loading"...
+  $('#qmeta_search').html('loading...');
+
+  //get results
+  $.get("https://api.qmeta.net/conn.php?key=" + key + "&query=" + query + "&offset=" + offset + "&lang=" + lang + "&format=" + format, function(data, status){
+    var output = '<ol>';
+    $.each( data.results.list, function( key, item ) {
+    output = output + '<li><a href="' + item.link + '"><img src="' + item.favicon + '" width="20px"/>' + item.title + '</a><br/><p>' + item.description + '</p></li>';
+  });
+    output = output + '</ol>';
+
+    //write results
+    $('#qmeta_search').html(output);
+  });
+})
+</script>
